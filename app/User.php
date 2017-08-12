@@ -22,6 +22,12 @@ class User extends Model implements
     protected $fillable = [
         'name',
         'email',
+        'number',
+        'device_ID',
+        'pic',
+        'password',
+        'type',
+        'active' // 1 = active, 0 = blocked
     ];
 
     /**
@@ -54,3 +60,4 @@ class User extends Model implements
         return [];
     }
 }
+    

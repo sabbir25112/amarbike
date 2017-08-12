@@ -53,7 +53,7 @@ class AuthController extends Controller
     protected function validatePostLoginRequest(Request $request)
     {
         $this->validate($request, [
-            'email' => 'required|email|max:255',
+            'number' => 'required|string|regex:/^(?:\+?88)?01[15-9]\d{8}$/',
             'password' => 'required',
         ]);
     }
@@ -118,7 +118,7 @@ class AuthController extends Controller
      */
     protected function getCredentials(Request $request)
     {
-        return $request->only('email', 'password');
+        return $request->only('number', 'password');
     }
 
     /**
