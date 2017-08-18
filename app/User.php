@@ -27,7 +27,8 @@ class User extends Model implements
         'pic',
         'password',
         'type',
-        'active' // 1 = active, 0 = blocked
+        'active', // 1 = active, 0 = blocked
+        'fb_url'
     ];
 
     /**

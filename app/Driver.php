@@ -12,7 +12,11 @@ class Driver extends Model
     	'user_id',
     	'bike_number',
     	'bike_paper_pic',
-    	'isApproved'
+    	'isApproved',
+        'lon',
+        'lat',
+        'device_ID',
+        'isHired'
     ];
 
     public static function createDriver(Request $request, User $user)

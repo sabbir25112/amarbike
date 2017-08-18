@@ -22,6 +22,33 @@ class RideNotification extends Model
     							->get();
     }
 
+    public static function rider_notification($id)
+    {
+        return RideNotification::with('rider','passenger','ride')
+                                ->where('driver_id',$id)
+                                ->where('decision',0)
+                                ->where('published',0)
+                                ->get();   
+    }
+
+    public static function stop_notification($ride_id,$driver_id)
+    {
+        $rides = RideNotification::where('ride_id',$ride_id)
+                                ->get();
+        foreach ($rides as $ride)
+        {
+            $ride->update(['published' => 1]);
+        }
+        if($driver_id != 0)
+        {
+            //set as accept
+            RideNotification::where('ride_id',$ride_id)
+                        ->where('driver_id',$driver_id)
+                        ->first()
+                        ->update(['decision' => 1]);    
+        }
+    }
+
     public function rider()
     {
     	return $this->belongsTo(User::class,'driver_id','id');

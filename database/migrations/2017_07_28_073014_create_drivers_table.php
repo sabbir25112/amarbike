@@ -16,12 +16,16 @@ class CreateDriversTable extends Migration
         Schema::create('drivers', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')
+            $table->foreign('user_id') 
                   ->references('id')->on('users')
                   ->onDelete('cascade');
             $table->string('bike_number')->nullable();
             $table->string('bike_paper_pic')->nullable();
             $table->integer('isApproved')->default(0);
+            $table->string('lon')->nullable();
+            $table->string('lat')->nullable();
+            $table->string('device_ID')->nullable();
+            $table->integer('isHired')->default(3);
             $table->timestamps();
         });
     }

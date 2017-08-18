@@ -20,6 +20,7 @@ $api->version('v1', function ($api) {
         'as' => 'api.auth.login',
         'uses' => 'App\Http\Controllers\Auth\AuthController@postLogin',
         ]);
+    $api->post('/bot/ride/create','App\Http\Controllers\UsersController@botRide');
     $api->group([
         'middleware' => 'api.auth',
         ], function ($api) {
@@ -32,6 +33,8 @@ $api->version('v1', function ($api) {
             $api->post('/ride/{ride_id}/start','App\Http\Controllers\RideController@start');
             $api->post('/ride/{ride_id}/end','App\Http\Controllers\RideController@end');
             $api->post('/ride/{ride_id}/cancel','App\Http\Controllers\RideController@cancel');
+            $api->post('/ride/{ride_id}/accept','App\Http\Controllers\RideController@accept');
+            $api->post('/ride/{ride_id}/deny','App\Http\Controllers\RideController@deny');
             //===========
             // Notification ========
             $api->get('/ride/notification','App\Http\Controllers\NotificationController@unpublished');

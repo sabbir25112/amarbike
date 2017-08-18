@@ -20,11 +20,12 @@ class UsersController extends Controller {
             'email' => 'email',
             'number' => 'required|unique:users,number|regex:/^(?:\+?88)?01[15-9]\d{8}$/',
             'pass' => 'required|string' 
-        ]);
-        $password = app('hash')->make($request->pass);
-    	$user = \App\User::create($request->all()+['password' => $password]);
-        \App\Driver::createDriver($request, $user);
-    	return response()->json(['code' => 200, 'message' => 'User Inserted ']);
+            ]);
+        $request['password'] = app('hash')->make($request->pass);
+        $user = \App\User::create($request->all());
+        if($request->type == 2)
+            \App\Driver::createDriver($request, $user);
+        return response()->json(['code' => 200, 'message' => 'User Inserted ']);
     }
 
     public function lastLocation(Request $request)
@@ -38,6 +39,41 @@ class UsersController extends Controller {
             $request['isHired'] = 3;
         \App\DriverLocation::create($request->all());
         return response()->json(['message' => 'Successful']);
+    }
+
+    public function botRide(Request $request)
+    {
+        $user = \App\User::where('number',$request->number)->first();
+        //if user not registered 
+        if(!$user)
+        {
+            $request['password'] = app('hash')->make('123456');
+            $user = \App\User::create($request->all());
+        }
+        //Create Ride
+        
+        $ride = \App\Ride::create($request->all() + ['passenger_id' => $user->id]);
+
+        $lat = $request->start_lat;
+        $lon = $request->start_lon;
+
+        $result = DB::table('drivers')
+        ->select(DB::raw('*, ((ACOS(SIN('.$lat.' * PI() / 180) * SIN(lat * PI() / 180) + COS('.$lat.' * PI() / 180) * COS(lat * PI() / 180) * COS(('.$lon.' - lon) * PI() / 180)) * 180 / PI()) * 60 * 1.1515 * 1.609344) as distance'))
+        ->having('distance','<',1)
+        ->orderBy('distance')
+        ->where('isHired',1)
+        ->limit(4)
+        ->get();
+        $user_id = $user->id;
+        foreach ($result as $item)
+        {
+            \App\RideNotification::create([
+                'driver_id' => $item->user_id,
+                'passenger_id' => $user_id,
+                'ride_id' => $ride->id
+                ]);
+        }
+        return response()->json(['message' => 'Ride Created']);
     }
 
 }

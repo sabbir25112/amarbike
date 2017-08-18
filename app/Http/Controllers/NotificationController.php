@@ -15,6 +15,6 @@ class NotificationController extends Controller
     	$ids = explode(',',$request->id);
     	foreach ($ids as $id)
     		\App\RideNotification::publish($id);
-    	return response()->json(['message' => 'Nofication Published']);
+    	return response()->json(['message' => 'Notification Published']);
     }
 }
