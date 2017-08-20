@@ -25,7 +25,7 @@ $api->version('v1', function ($api) {
         'middleware' => 'api.auth',
         ], function ($api) {
             //basically this two api are same
-            $api->post('/last_location','App\Http\Controllers\UsersController@lastLocation');
+            // $api->post('/last_location','App\Http\Controllers\UsersController@lastLocation');
             $api->post('/driver_last_location','App\Http\Controllers\LocationController@driverLastLocation');
             //
             //Rides ==========
@@ -39,7 +39,7 @@ $api->version('v1', function ($api) {
             // Notification ========
             $api->get('/ride/notification','App\Http\Controllers\NotificationController@unpublished');
             $api->post('/notification/publish','App\Http\Controllers\NotificationController@publish');
-            
+            $api->get('/ride/available','App\Http\Controllers\NotificationController@available');
             // ============
             $api->get('/auth/user', [
                 'uses' => 'App\Http\Controllers\Auth\AuthController@getUser',

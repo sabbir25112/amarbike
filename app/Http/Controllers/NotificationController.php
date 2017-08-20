@@ -17,4 +17,10 @@ class NotificationController extends Controller
     		\App\RideNotification::publish($id);
     	return response()->json(['message' => 'Notification Published']);
     }
+    public function available(Request $request)
+    {
+        $user_id = $request->user()->id;
+        $rides = \App\RideNotification::rider_notification($user_id);
+        return response()->json(['code' => 200,'rides' => $rides]);
+    }
 }

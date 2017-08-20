@@ -27,7 +27,8 @@ class Ride extends Model
 		'start_lon',
 		'start_lat',
 		'end_lon',
-		'end_lat'
+		'end_lat',
+		'pickup_time'
 	];
 
 	

@@ -27,6 +27,7 @@ class Rides extends Migration
             $table->datetime('end_time')->nullable();
             $table->string('pick_up');
             $table->string('drop_off');
+            $table->datetime('pickup_time');
             $table->decimal('time')->default(0);
             $table->decimal('app_fare')->default(0);
             $table->integer('status')->default(0);
